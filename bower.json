@@ -1,0 +1,31 @@
+{
+    "name": "cawa-spf",
+    "description": "",
+    "homepage": "https://github.com/cawaphp/spf",
+    "authors": [
+        "tchiotludo"
+    ],
+    "main": [
+
+    ],
+    "moduleType": [
+        "amd"
+    ],
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests",
+        "src"
+    ],
+    "license": "GPL-3.0",
+    "dependencies": {
+        "cawa-cawa": "git://github.com/cawaphp/cawa.git#master",
+
+        "bootstrap3-dialog": "^1.35.3",
+        "spf": "git://github.com/tchiotludo/spfjs.git#v2.4.1",
+        "nprogress": "^0.2.0",
+        "async": "~2.1"
+    }
+}

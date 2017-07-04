@@ -1,0 +1,210 @@
+$modal-aside-size: 95%;
+
+/**
+ * Bootstrap Dialog
+ */
+.bootstrap-dialog {
+    .bootstrap-dialog-title {
+        color: #fff;
+        font-size: $font-size-large;
+    }
+
+    .modal-body {
+        overflow: auto;
+    }
+
+    .modal-footer {
+        background-color: #FFF;
+        padding: 5px;
+
+        .navbar-btn {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+    }
+
+
+    & .modal-header {
+        border-bottom: 0;
+        padding: 13px 13px 12px 13px;
+    }
+
+    &.type-default .bootstrap-dialog-title {
+        color: #333;
+    }
+
+    &.type-info .modal-header {
+        background-color: $brand-info;
+    }
+
+    &.type-primary .modal-header {
+        background-color: $brand-primary;
+    }
+
+    &.type-success .modal-header {
+        background-color: $brand-success;
+    }
+
+    &.type-warning .modal-header {
+        background-color: $brand-warning;
+    }
+
+    &.type-danger .modal-header {
+        background-color: $brand-danger;
+    }
+
+    .modal-header.bootstrap-dialog-draggable {
+        cursor: move;
+    }
+}
+
+/**
+ * Flex
+ */
+
+.modal.flex {
+    .modal-dialog {
+        .modal-content {
+            display: flex;
+            flex-direction: column;
+            max-height: calc(100% - 20px);
+
+            .modal-header {
+                position: absolute;
+                background: $gray;
+                top: 2px;
+                right: 2px;
+                z-index: 3;
+                border: 1px solid $gray-darker;
+                border-radius: 50%;
+                width: 26px;
+                height: 0;
+                padding: 13px 0;
+
+                .close {
+                    color: white;
+                    opacity: 1;
+                    top: -1px;
+                    position: absolute;
+                    left: 4px;
+                    font-size: 29px;
+                }
+
+                .bootstrap-dialog-title {
+                    display: none;
+                }
+            }
+
+            .modal-body {
+                flex: 1 1 auto;
+                overflow: auto;
+            }
+        }
+
+
+        @media (min-width: $screen-sm-min) {
+            & {
+                .modal-content {
+                    max-height: calc(100% - 60px);
+                    .modal-header {
+                        top: -12px;
+                        right: -12px;
+                    }
+                }
+            }
+        }
+
+        @media (min-width: $screen-md-min) {
+            & {
+                width: 60%
+            }
+        }
+
+        @media (min-width: $screen-lg-min) {
+            & {
+                width: 50%
+            }
+        }
+
+
+    }
+}
+
+/**
+ * Left & Right
+ */
+.modal.left .modal-dialog,
+.modal.right .modal-dialog {
+    position: fixed;
+    margin: auto;
+    width: $modal-aside-size;
+    height: 100%;
+    -webkit-transform: translate3d(0%, 0, 0);
+    -ms-transform: translate3d(0%, 0, 0);
+    -o-transform: translate3d(0%, 0, 0);
+    transform: translate3d(0%, 0, 0);
+}
+
+.modal.left .modal-content,
+.modal.right .modal-content {
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    .modal-header {
+        flex: 0 0 auto;
+    }
+
+    .modal-body {
+        flex: 1 1 auto;
+        overflow-y: auto;
+    }
+
+    .modal-footer {
+        flex: 0 0 auto;
+    }
+
+}
+
+/**
+ * Left
+ */
+.modal.left.fade .modal-dialog {
+    left: -$modal-aside-size;
+    -webkit-transition: opacity 0.2s linear, left 0.2s ease-out;
+    -moz-transition: opacity 0.2s linear, left 0.2s ease-out;
+    -o-transition: opacity 0.2s linear, left 0.2s ease-out;
+    transition: opacity 0.2s linear, left 0.2s ease-out;
+}
+
+.modal.left.fade.in .modal-dialog {
+    left: 0;
+}
+
+/**
+ * Right
+ */
+.modal.right.fade .modal-dialog {
+    right: -$modal-aside-size;
+    -webkit-transition: opacity 0.2s linear, right 0.2s ease-out;
+    -moz-transition: opacity 0.2s linear, right 0.2s ease-out;
+    -o-transition: opacity 0.2s linear, right 0.2s ease-out;
+    transition: opacity 0.2s linear, right 0.2s ease-out;
+}
+
+.modal.right.fade.in .modal-dialog {
+    right: 0;
+}
+
+/**
+ * Custom App Style
+ */
+.bootstrap-dialog {
+    .modal-footer {
+        .btn-block {
+            width: auto;
+            display: inline-block;
+        }
+    }
+}

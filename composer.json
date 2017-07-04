@@ -1,0 +1,28 @@
+{
+    "name": "cawaphp/spf",
+    "description": "Сáша Spf",
+    "keywords": [
+        "cawa",
+        "spf"
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "tchiotludo"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Cawa\\Spf\\": "src"
+        }
+    },
+    "require": {
+        "php": "~7.0",
+        "cawaphp/cawa" : "dev-master"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~5.5"
+    }
+}
