@@ -67,7 +67,7 @@ require([
                     return true;
                 }
 
-                if (errString === "abort" || errString === "Temporary Redirect") {
+                if (errString === "abort" || (xhr.responseJSON && xhr.responseJSON.redirect)) {
                     return true;
                 }
 
@@ -116,6 +116,8 @@ require([
              */
             $(document).on('spferror', function(event)
             {
+                event.preventDefault();
+
                 self._errorDisplay(event.originalEvent.detail.responseText || event.originalEvent.detail.xhr.responseText);
                 self._errorHandler(event.originalEvent.detail.err.message, event.originalEvent.detail.err.stack);
 
@@ -227,7 +229,9 @@ require([
             // Request
             $(document).bind("progress.request", function (event, progressEvent)
             {
-                nprogress.set((progressEvent.loaded / progressEvent.total)-0.10);
+                if (progressEvent.loaded && progressEvent.total) {
+                    nprogress.set((progressEvent.loaded / progressEvent.total)-0.10);
+                }
             });
         },
 
