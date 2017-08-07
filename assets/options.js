@@ -173,8 +173,12 @@ SpfOption.getAbsoluteUrl = function(relative)
 SpfOption.getReferer = function()
 {
     var referer;
-    if (window.location.hash.indexOf('#/') >= 0) {
-        referer = window.location.hash.substr(1)
+    if (
+        window.location.hash.substr(0, 2) === "#/" ||
+        window.location.hash.substr(0, 2) === "#~"
+    ) {
+        var urls = window.location.hash.split('#');
+        referer = SpfOption.getAbsoluteUrl(urls.pop());
     } else {
         referer = window.location.pathname + window.location.search;
     }
