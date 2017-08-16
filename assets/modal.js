@@ -207,6 +207,8 @@ require([
             var dialogsUrl = window.location.hash;
             var nextHash = '';
 
+            dialog.$modal.attr('data-closing', 'true');
+
             if (dialogsUrl.indexOf('#') >= 0) {
                 nextHash = dialogsUrl.substr(0, dialogsUrl.lastIndexOf('#'));
             }
@@ -235,7 +237,7 @@ require([
             var returnZindex;
 
             $.each(BootstrapDialog.dialogs, function (id, dialogInstance) {
-                if (!returnZindex || dialogInstance.$modal.css("z-index") > returnZindex) {
+                if (!returnZindex || (dialogInstance.$modal.attr('data-closing') !== 'true' && dialogInstance.$modal.css("z-index") > returnZindex)) {
                     returnZindex = dialogInstance.$modal.css("z-index");
                     returnId = id;
                 }

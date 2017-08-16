@@ -229,7 +229,7 @@ require([
             // Request
             $(document).bind("progress.request", function (event, progressEvent)
             {
-                if (progressEvent.loaded && progressEvent.total) {
+                if (progressEvent && progressEvent.loaded && progressEvent.total) {
                     nprogress.set((progressEvent.loaded / progressEvent.total)-0.10);
                 }
             });
@@ -241,8 +241,11 @@ require([
          */
         _onStartLoading : function(event)
         {
-            this._getErrorContainer().find(".ajax-error").remove();
+            if (event.namespace !== "spf") {
+                return true;
+            }
 
+            this._getErrorContainer().find(".ajax-error").remove();
             nprogress.start();
         },
 
@@ -252,6 +255,10 @@ require([
          */
         _onProgressLoading : function(event)
         {
+            if (event.namespace !== "spf") {
+                return true;
+            }
+
             nprogress.inc();
         },
 
@@ -261,6 +268,10 @@ require([
          */
         _onEndLoading : function(event)
         {
+            if (event.namespace !== "spf") {
+                return true;
+            }
+
             nprogress.done();
         },
 
