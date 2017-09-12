@@ -7,6 +7,7 @@ var SpfOption = function (url, type)
 {
     this.url = url;
     this.type = type;
+    this.frame = null;
     this.onDone = [];
     this.onError = [];
     this.postData = null;
@@ -69,6 +70,25 @@ SpfOption.prototype.getType = function ()
 SpfOption.prototype.setType = function (type)
 {
     this.type = type;
+
+    return this;
+};
+
+/**
+ * @return {string}
+ */
+SpfOption.prototype.getFrame = function ()
+{
+    return this.frame;
+};
+
+/**
+ * @param {string} type
+ * @return {SpfOption}
+ */
+SpfOption.prototype.setFrame = function (type)
+{
+    this.frame = type;
 
     return this;
 };

@@ -207,6 +207,7 @@ require([
             var self = this;
 
             // Internal Request
+            this.element.on('request.spf', $.proxy(this._onRequest, this));
             this.element.on('start.spf', $.proxy(this._onStartLoading, this));
             this.element.on('progress.spf', $.proxy(this._onProgressLoading, this));
             this.element.on('end.spf', $.proxy(this._onEndLoading, this));
@@ -233,6 +234,20 @@ require([
                     nprogress.set((progressEvent.loaded / progressEvent.total)-0.10);
                 }
             });
+        },
+
+        /**
+         * @param {Event|jQuery.Event} event
+         * @param {SpfOption} spfOptions
+         * @private
+         */
+        _onRequest : function(event, spfOptions)
+        {
+            if (event.namespace !== "spf") {
+                return true;
+            }
+
+            this.request(spfOptions)
         },
 
         /**
@@ -337,6 +352,10 @@ require([
                 element.attr("data-app-target")
             );
 
+            if (element.attr("data-app-frame")) {
+                option.setFrame(element.attr("data-app-frame"));
+            }
+
             this.request(option)
         },
 
@@ -365,6 +384,12 @@ require([
          */
         request: function(spfOptions)
         {
+            if (spfOptions.getFrame() === 'parent') {
+                spfOptions.setFrame(null);
+                window.parent.$(window.parent.body).trigger('request.spf', spfOptions);
+                return;
+            }
+
             // save current scroll in case of redirect
             this._positions[this._currentUrl] = [window.pageXOffset, window.pageYOffset];
 
