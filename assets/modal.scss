@@ -136,6 +136,7 @@ $modal-aside-size: 95%;
 .modal.left .modal-dialog,
 .modal.right .modal-dialog {
     position: fixed;
+    will-change: transform;
     margin: auto;
     width: $modal-aside-size;
     height: 100%;

@@ -11,6 +11,7 @@ $nprogress-icon: $nprogress-color !default;;
         background: $nprogress-color;
 
         position: fixed;
+        will-change: transform;
         z-index: $zindex;
         top: 0;
         left: 0;
@@ -37,6 +38,7 @@ $nprogress-icon: $nprogress-color !default;;
     .spinner {
         display: block;
         position: fixed;
+        will-change: transform;
         z-index: $zindex;
         top: 15px;
         right: 15px;
