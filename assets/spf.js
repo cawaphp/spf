@@ -412,6 +412,9 @@ require([
                     $(this.element)['spf-modal']("replace", spfOptions);
                     break;
 
+                case SpfOption.TYPE_MAIN_WINDOW:
+                    $(this.element)['spf-modal']("close");
+
                 default:
                     spf.navigate(spfOptions.getUrl(), spfOptions.toSpfRequestOptions());
                     break;
