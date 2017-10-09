@@ -34,12 +34,20 @@ class HttpApp extends \Cawa\App\HttpApp
     {
         if (self::isSpf()) {
             if (self::response()->getHeader('Location')) {
-                self::response()->addHeader('Content-Type', 'application/json; charset=utf-8');
-                self::response()->setStatus(307);
-                self::response()->setBody(json_encode([
-                    'redirect' => self::response()->getHeader('Location'),
-                ]));
-                self::response()->removeHeader('Location');
+
+                // IE & Edge bug fix need a standard redirection
+                if (!(
+                    preg_match('~MSIE|Internet Explorer~i', self::request()->getHeader('User-Agent')) ||
+                    strpos(self::request()->getHeader('User-Agent'), 'Trident/7.0; rv:11.0') !== false ||
+                    strpos(self::request()->getHeader('User-Agent'), 'Edge/') !== false
+                )) {
+                    self::response()->addHeader('Content-Type', 'application/json; charset=utf-8');
+                    self::response()->setStatus(307);
+                    self::response()->setBody(json_encode([
+                        'redirect' => self::response()->getHeader('Location'),
+                    ]));
+                    self::response()->removeHeader('Location');
+                }
             }
         }
 
