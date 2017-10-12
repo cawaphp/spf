@@ -414,6 +414,7 @@ require([
 
                 case SpfOption.TYPE_MAIN_WINDOW:
                     $(this.element)['spf-modal']("close");
+                    break;
 
                 default:
                     spf.navigate(spfOptions.getUrl(), spfOptions.toSpfRequestOptions());

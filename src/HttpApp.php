@@ -34,7 +34,6 @@ class HttpApp extends \Cawa\App\HttpApp
     {
         if (self::isSpf()) {
             if (self::response()->getHeader('Location')) {
-
                 // IE & Edge bug fix need a standard redirection
                 if (!(
                     preg_match('~MSIE|Internet Explorer~i', self::request()->getHeader('User-Agent')) ||

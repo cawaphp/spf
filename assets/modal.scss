@@ -64,10 +64,11 @@ $modal-aside-size: 95%;
 
 .modal.flex {
     .modal-dialog {
+        height: calc(100% - 20px);
         .modal-content {
             display: flex;
             flex-direction: column;
-            max-height: calc(100% - 20px);
+            max-height: 100%;
 
             .modal-header {
                 position: absolute;
@@ -113,20 +114,6 @@ $modal-aside-size: 95%;
                 }
             }
         }
-
-        @media (min-width: $screen-md-min) {
-            & {
-                width: 60%
-            }
-        }
-
-        @media (min-width: $screen-lg-min) {
-            & {
-                width: 50%
-            }
-        }
-
-
     }
 }
 
