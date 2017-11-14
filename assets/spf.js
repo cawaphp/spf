@@ -260,6 +260,12 @@ require([
                 return true;
             }
 
+            $('img').each(function() {
+                if (this.naturalWidth === 0 || this.naturalHeight === 0 || this.complete === false) {
+                    $(this).attr('src', '');
+                }
+            });
+
             this._getErrorContainer().find(".ajax-error").remove();
             nprogress.start();
         },
