@@ -215,8 +215,8 @@ SpfOption.prototype.toSpfRequestOptions = function ()
 
     var options = {
         headers: {
-            'x-spf-previous': SpfOption.getReferer(),
-            'x-spf-referer': SpfOption.getReferer()
+            'X-SPF-Previous': SpfOption.getReferer(),
+            'X-SPF-Referer': SpfOption.getReferer()
         }
     };
 

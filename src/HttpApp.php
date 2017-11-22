@@ -14,6 +14,8 @@ declare(strict_types = 1);
 namespace Cawa\Spf;
 
 use Cawa\App\HttpFactory;
+use Cawa\Http\ServerRequest;
+use Cawa\Net\Uri;
 
 class HttpApp extends \Cawa\App\HttpApp
 {
@@ -24,7 +26,41 @@ class HttpApp extends \Cawa\App\HttpApp
      */
     public static function isSpf() : bool
     {
-        return !is_null(self::request()->getHeader('x-spf-previous'));
+        return !is_null(self::request()->getHeader('X-Spf-Previous'));
+    }
+
+    /**
+     * @param ServerRequest $request
+     *
+     * @return Uri
+     */
+    public static function getReferer(ServerRequest $request) : ?Uri
+    {
+        $getValidUri = function (string $url = null) : ?Uri {
+            if (!$url) {
+                return null;
+            }
+
+            $uri = new Uri($url);
+            $uri = new Uri($uri->get(true));
+
+            return $uri;
+        };
+
+
+        if ($return = $getValidUri($request->getPostOrQuery('referer'))) {
+            return $return;
+        }
+
+        if ($return = $getValidUri($request->getHeader('X-Spf-Referer'))) {
+            return $return;
+        }
+
+        if ($return = $getValidUri($request->getHeader('Referer'))) {
+            return $return;
+        }
+
+        return null;
     }
 
     /**

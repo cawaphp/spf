@@ -118,7 +118,10 @@ require([
             {
                 event.preventDefault();
 
-                self._errorDisplay(event.originalEvent.detail.responseText || event.originalEvent.detail.xhr.responseText);
+                var message = (event.originalEvent.detail ? event.originalEvent.detail.responseText : null) ||
+                    (event.originalEvent.detail.xhr ? event.originalEvent.detail.xhr.responseText : null);
+
+                self._errorDisplay(message);
                 self._errorHandler(event.originalEvent.detail.err.message, event.originalEvent.detail.err.stack);
 
                 spf.history.replace(self._currentUrl);
@@ -194,8 +197,8 @@ require([
             // Request
             $(document).on("before.request", function(event, xhr)
             {
-                xhr.setRequestHeader("x-spf-previous", SpfOption.getReferer());
-                xhr.setRequestHeader("x-spf-referer", SpfOption.getReferer());
+                xhr.setRequestHeader("X-SPF-Previous", SpfOption.getReferer());
+                xhr.setRequestHeader("X-SPF-Referer", SpfOption.getReferer());
             });
         },
 
