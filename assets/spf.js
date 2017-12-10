@@ -2,10 +2,11 @@ require([
     "jquery",
     "spf",
     "./options",
+    "../../../../vendor/cawaphp/cawa/assets/request",
     "nprogress",
     "log",
     "cawaphp/cawa/assets/widget"
-], function($, spf, SpfOption, nprogress, log)
+], function($, spf, SpfOption, Request, nprogress, log)
 {
     log = log.getLogger("Cawa Spf");
 
@@ -368,7 +369,6 @@ require([
             this.request(option)
         },
 
-
         /**
          * @param {string} url
          * @param {string} target
@@ -389,10 +389,74 @@ require([
         },
 
         /**
+         * @param {SpfOption} option
+         * @param {function} callback
+         * @returns {{complete: complete, fail: fail}}
+         */
+        requestCallback: function (option, callback)
+        {
+            var self = this;
+
+            return {
+                complete: function (event, xhr, spfResponse) {
+                    $.each(option.getOnDone(), function (key, value) {
+                        // @TODO: not a standard event
+                        value(event, xhr, spfResponse);
+                    });
+
+                    // redirection to main url
+                    if (window.location.pathname + window.location.search === spfResponse.url) {
+
+                        spf.process(spfResponse, function () {
+                            $(body)['spf']('processEnd', option.getUrl(), spfResponse);
+                        });
+
+                        return true;
+                    }
+
+                    // is not a spf response, trigger to document
+                    if (typeof spfResponse.url === 'undefined' && option.getType() !== SpfOption.TYPE_PARTIAL) {
+                        $(document).trigger('request.spf', {result: spfResponse,  xhr: xhr});
+
+                        return true;
+                    }
+
+                    callback(event, xhr, spfResponse);
+                },
+                fail: function (event, xhr, errorTxt) {
+                    if (xhr.responseJSON && xhr.responseJSON.redirect) {
+                        event.preventDefault();
+                        event.stopImmediatePropagation();
+
+                        option
+                            .setUrl(xhr.responseJSON.redirect)
+                            .setPostData(null);
+
+                        Request.send(
+                            option.getUrl(),
+                            self.requestCallback(option, callback),
+                            option.getMethod(),
+                            option.getPostData(),
+                            option.toAjaxOptions()
+                        );
+
+                        return false;
+                    }
+
+                    $.each(option.getOnError(), function (key, value) {
+                        value(event, xhr, errorTxt);
+                    });
+                }
+            };
+        },
+
+        /**
          * @param {SpfOption} spfOptions
          */
         request: function(spfOptions)
         {
+            var self = this;
+
             if (spfOptions.getFrame() === 'parent') {
                 spfOptions.setFrame(null);
                 window.parent.$(window.parent.body).trigger('request.spf', spfOptions);
@@ -421,8 +485,25 @@ require([
                     $(this.element)['spf-modal']("replace", spfOptions);
                     break;
 
+                case SpfOption.TYPE_PARTIAL:
+                    Request.send(
+                        spfOptions.getUrl(),
+                        this.requestCallback(spfOptions, function(event, xhr, spfResponse)
+                        {
+                            spf.process(spfResponse, function () {
+                                self.processEnd(spfOptions.getUrl(), spfResponse);
+                            });
+                        }),
+                        spfOptions.getMethod(),
+                        spfOptions.getPostData(),
+                        spfOptions.toAjaxOptions()
+                    );
+
+                    break;
+
                 case SpfOption.TYPE_MAIN_WINDOW:
                     $(this.element)['spf-modal']("close");
+                    spf.navigate(spfOptions.getUrl(), spfOptions.toSpfRequestOptions());
                     break;
 
                 default:

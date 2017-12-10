@@ -52,7 +52,7 @@ require([
                 element.find(":submit").prop('disabled', false);
             };
 
-            var options = new SpfOption(uri);
+            var options = new SpfOption(uri, element.attr('data-app-target'));
             options.setPostData(formData);
             options.addOnDone(finaly);
             options.addOnError(finaly);

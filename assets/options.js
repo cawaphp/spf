@@ -56,6 +56,11 @@ SpfOption.TYPE_CURRENT_MODAL = 'current-modal';
 SpfOption.TYPE_MAIN_WINDOW = 'main-window';
 
 /**
+ * @constant
+ */
+SpfOption.TYPE_PARTIAL = 'partial';
+
+/**
  * @return {string}
  */
 SpfOption.prototype.getType = function ()
@@ -207,6 +212,18 @@ SpfOption.getReferer = function()
 };
 
 /**
+ * @returns {{headers: {}}}
+ */
+SpfOption.prototype.toAjaxOptions = function ()
+{
+    return {
+        headers: {
+            'X-SPF-Type': this.getType()
+        }
+    };
+};
+
+/**
  * @return {spf.RequestOptions}
  */
 SpfOption.prototype.toSpfRequestOptions = function ()
@@ -216,7 +233,8 @@ SpfOption.prototype.toSpfRequestOptions = function ()
     var options = {
         headers: {
             'X-SPF-Previous': SpfOption.getReferer(),
-            'X-SPF-Referer': SpfOption.getReferer()
+            'X-SPF-Referer': SpfOption.getReferer(),
+            'X-SPF-Type': self.getType()
         }
     };
 

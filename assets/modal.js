@@ -81,51 +81,13 @@ require([
         _request: function (option, callback) {
             var self = this;
 
-            var requestCallback = {
-                complete: function (event, xhr, spfResponse) {
-                    $.each(option.getOnDone(), function (key, value) {
-                        // @TODO: not a standard event
-                        value(event, xhr, spfResponse);
-                    });
-
-                    // redirection to main url
-                    if (window.location.pathname + window.location.search === spfResponse.url) {
-
-                        spf.process(spfResponse, function () {
-                            $(body)['spf']('processEnd', option.getUrl(), spfResponse);
-                        });
-
-                        return true;
-                    }
-
-                    // is not a spf response, trigger to document
-                    if (typeof spfResponse.url === 'undefined') {
-                        $(document).trigger('request.spf', {result: spfResponse,  xhr: xhr});
-
-                        return true;
-                    }
-
-                    callback(event, xhr, spfResponse);
-                },
-                fail: function (event, xhr, errorTxt) {
-                    if (xhr.responseJSON && xhr.responseJSON.redirect) {
-                        event.preventDefault();
-                        event.stopImmediatePropagation();
-
-                        option
-                            .setUrl(xhr.responseJSON.redirect)
-                            .setPostData(null);self._request(option, callback);
-
-                        return false;
-                    }
-
-                    $.each(option.getOnError(), function (key, value) {
-                        value(event, xhr, errorTxt);
-                    });
-                }
-            };
-
-            Request.send(option.getUrl(), requestCallback, option.getMethod(), option.getPostData());
+            Request.send(
+                option.getUrl(),
+                $(body)['spf']('requestCallback', option, callback),
+                option.getMethod(),
+                option.getPostData(),
+                option.toAjaxOptions()
+            );
         },
 
         /**
@@ -152,6 +114,12 @@ require([
                     };
 
                     var dialog = BootstrapDialog.show(modalOptions);
+                    dialog.getModal().on('click', {dialog: this}, function (event) {
+                        $(event.target).hasClass('modal-dialog') &&
+                            dialog.isClosable() &&
+                            dialog.canCloseByBackdrop() &&
+                            dialog.close();
+                    });
 
                     if (option.getType() === SpfOption.TYPE_NEW_MODAL) {
                         spf.history.add(window.location.pathname + window.location.search + (window.location.hash ? window.location.hash + '#' + SpfOption.getRelativeUrl(option.getUrl()) : '#' + SpfOption.getRelativeUrl(option.getUrl())));
