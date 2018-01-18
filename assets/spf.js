@@ -354,6 +354,7 @@ require([
             }
 
             event.preventDefault();
+            event.stopImmediatePropagation();
 
             var element = $(event.currentTarget);
 
