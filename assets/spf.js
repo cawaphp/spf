@@ -473,6 +473,10 @@ require([
                 spfOptions.setType(SpfOption.TYPE_CURRENT_MODAL);
             }
 
+            if (!dialog && spfOptions.getType() === SpfOption.TYPE_CURRENT_MODAL) {
+                spfOptions.setType(null);
+            }
+
             log.info("New request", spfOptions);
 
             switch (spfOptions.getType())

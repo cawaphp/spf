@@ -42,11 +42,15 @@ class HttpApp extends \Cawa\App\HttpApp
             }
 
             $uri = new Uri($url);
+
+            if ($uri->getHostFull() !== self::request()->getUri()->getHostFull()) {
+                return null;
+            }
+
             $uri = new Uri($uri->get(true));
 
             return $uri;
         };
-
 
         if ($return = $getValidUri($request->getPostOrQuery('referer'))) {
             return $return;
