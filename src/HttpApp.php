@@ -43,7 +43,7 @@ class HttpApp extends \Cawa\App\HttpApp
 
             $uri = new Uri($url);
 
-            if ($uri->getHostFull() !== self::request()->getUri()->getHostFull()) {
+            if ($uri->getHostFull() && $uri->getHostFull() !== self::request()->getUri()->getHostFull()) {
                 return null;
             }
 
@@ -56,11 +56,11 @@ class HttpApp extends \Cawa\App\HttpApp
             return $return;
         }
 
-        if ($return = $getValidUri($request->getHeader('X-Spf-Referer'))) {
+        if ($return = $getValidUri($request->getHeader('X-Spf-referer'))) {
             return $return;
         }
 
-        if ($return = $getValidUri($request->getHeader('Referer'))) {
+        if ($return = $getValidUri($request->getHeader('referer'))) {
             return $return;
         }
 
